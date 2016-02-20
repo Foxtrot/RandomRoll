@@ -1,5 +1,6 @@
 {
     "title": "RandomRoll",
     "version": "1.0",
-    "author": "Foxtrot"
+    "author": "Foxtrot",
+    "description": "This module allows you to troll unsuspecting clients connected to your WiFi Pineapple."
 }
