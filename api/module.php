@@ -51,6 +51,7 @@ class RandomRoll extends Module
             if ($checked){
                 exec('iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination $(uci get network.lan.ipaddr):80');
                 exec('iptables -t nat -A POSTROUTING -j MASQUERADE');
+                exec('mv /www/index.php /pineapple/modules/RandomRoll/assets/www/index.php');
                 symlink('/pineapple/modules/RandomRoll/assets/selector.php', '/www/index.php');
                 @mkdir('/www/Rolls');
                 symlink("/pineapple/modules/RandomRoll/assets/Rolls/{$title}", "/www/Rolls/{$title}");
@@ -69,6 +70,7 @@ class RandomRoll extends Module
 
         exec('iptables -t nat -D PREROUTING -p tcp --dport 80 -j DNAT --to-destination $(uci get network.lan.ipaddr):80');
         unlink('/www/index.php');
+        exec('mv /pineapple/modules/RandomRoll/assets/www/index.php /www/index.php');
         exec('rm -rf /www/Rolls/');
 
         file_put_contents('/pineapple/modules/RandomRoll/assets/running', '0');
