@@ -44,14 +44,15 @@ class RandomRoll extends Module
     {
         $date = date("Ymd H:i:s -- ");
         file_put_contents("/pineapple/modules/RandomRoll/assets/logs/randomroll.log", $date . "RandomRoll Started\n", FILE_APPEND);
-
+        
+        exec('mv /www/index.php /pineapple/modules/RandomRoll/assets/www/index.php');
+        
         foreach($this->request->selected as $roll){
             $title = $roll->randomRollTitle;
             $checked = $roll->randomRollChecked;
             if ($checked){
                 exec('iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination $(uci get network.lan.ipaddr):80');
                 exec('iptables -t nat -A POSTROUTING -j MASQUERADE');
-                exec('mv /www/index.php /pineapple/modules/RandomRoll/assets/www/index.php');
                 symlink('/pineapple/modules/RandomRoll/assets/selector.php', '/www/index.php');
                 @mkdir('/www/Rolls');
                 symlink("/pineapple/modules/RandomRoll/assets/Rolls/{$title}", "/www/Rolls/{$title}");
